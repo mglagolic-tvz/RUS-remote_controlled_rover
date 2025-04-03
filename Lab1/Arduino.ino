@@ -3,8 +3,10 @@
 #define LED3 13   // LED3 pin
 #define LED4 7    // LED4 pin
 #define BUTTON1 21 // Tipka 1 (vanjski prekid INT0)
-#define BUTTON2 20 // Tipka 2 (vanjski prekid INT1)
-#define BUTTON3 19 // Tipka 3 (vanjski prekid INT2)
+#define BUTTON2 19 // Tipka 2 (vanjski prekid INT1)
+#define BUTTON3 20 // Tipka 3 (vanjski prekid INT2)
+
+volatile bool continueISR2 = true;
 
 void setup() {
   
@@ -17,17 +19,17 @@ void setup() {
   pinMode(BUTTON3, INPUT_PULLUP);
 
   attachInterrupt(digitalPinToInterrupt(BUTTON1), invertLED1StateISR, FALLING);
-
+  attachInterrupt(digitalPinToInterrupt(BUTTON2), blockingISR, FALLING);
+  attachInterrupt(digitalPinToInterrupt(BUTTON3), breakISR2, FALLING);
   
 }
 
 void loop() {
   // Pokazatelj da se loop petlja nesmetano vrti
   digitalWrite(LED3, HIGH);  
-  delay(1000);               
+  delay(500);               
   digitalWrite(LED3, LOW);   
-  delay(1000);
-  
+  delay(500);
 }
 
 void invertLED1StateISR(){
@@ -36,3 +38,17 @@ void invertLED1StateISR(){
   digitalWrite(LED1, led1State);
 }
 
+void blockingISR(){
+  sei();
+  continueISR2 = true;
+  digitalWrite(LED2, HIGH);
+  while(continueISR2){
+    //ne radi ništa
+  }
+  digitalWrite(LED2, LOW);
+  continueISR2 = false;
+}
+
+void breakISR2(){
+  continueISR2 = false;
+}
