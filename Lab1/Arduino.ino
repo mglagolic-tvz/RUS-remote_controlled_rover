@@ -17,8 +17,11 @@
  * - Detekcija pokreta uz aktivaciju alarma
  * - Primjer blokirajućeg ISR-a
  * 
- * @author  Tvoje Ime
- * @date    2025
+ * Napomena: Projekt je dio vježbe s ciljem uvježbavanja i razumijevanja rada prekida (interrupts) u realnom vremenu.
+ * 
+ * 
+ * @author  Matija Glagolić
+ * @date    4.4.2025
  * @version 1.0
  */
 
@@ -90,7 +93,7 @@ void loop() {
       digitalWrite(LED3, led1State);
       brojac++;
       lastMillis = newMillis;
-      
+      Serial.println("Poruka");
     }
 
     if(brojac >= maxBrojPonavljanja){
@@ -206,4 +209,3 @@ void dimLED4() {
 void pirISR(){
   movementDetected = true;
 }
-
