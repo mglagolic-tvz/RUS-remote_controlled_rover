@@ -1,32 +1,54 @@
+/**
+ * @file    Arduino.ino
+ * @brief   Edukacijski projekt za rad s prekidima u ugrađenim platformama.
+ * 
+ * Ovaj projekt demonstrira korištenje vanjskih prekida, timer prekida i osnovne obrade ulaznih signala (tipke i senzor pokreta).
+ * Koristi se za praktično upoznavanje s ISR-ovima (Interrupt Service Routine) i njihovim utjecajem na tijek programa.
+ * 
+ * Komponente:
+ * - 3 tipke koje aktiviraju razne ISR-ove
+ * - PIR senzor pokreta
+ * - 4 LED-ice
+ * - zvučnik
+ * 
+ * Funkcionalnosti:
+ * - Reakcija LED-ica i zvučnika na prekide
+ * - Debounce logika za tipke
+ * - Detekcija pokreta uz aktivaciju alarma
+ * - Primjer blokirajućeg ISR-a
+ * 
+ * @author  Tvoje Ime
+ * @date    2025
+ * @version 1.0
+ */
+
 #include <TimerOne.h>
 
-// Definicije pinova
-#define LED1 11     // LED1 - upravljanje putem tipke 1
-#define LED2 12     // LED2 - trepće unutar ISR (tipka 2)
-#define LED3 13     // LED3 - trepće 10 puta nakon pritiska tipke 3
-#define LED4 8      // LED4 - dimmer efekt preko Timer interrupta
-#define BUTTON1 21  // Tipka 1 - vanjski prekid INT0
-#define BUTTON2 20  // Tipka 2 - vanjski prekid INT1
-#define BUTTON3 19  // Tipka 3 - vanjski prekid INT2
-#define PIR 2       // PIR senzor pokreta - vanjski prekid
-#define SPEAKER 22  // Zvučnik
+// === Definicije pinova ===
+#define LED1 11     ///< LED1 - uključuje/isključuje se na pritisak tipke 1
+#define LED2 12     ///< LED2 - trepće unutar ISR-a (tipka 2) kao primjer blokirajućeg prekida
+#define LED3 13     ///< LED3 - trepne 5 puta nakon pritiska tipke 3
+#define LED4 8      ///< LED4 - stvara efekt "disanja" putem timer prekida
+#define BUTTON1 21  ///< Tipka 1 - aktivira prekid INT0
+#define BUTTON2 20  ///< Tipka 2 - aktivira prekid INT1 (blokirajući ISR)
+#define BUTTON3 19  ///< Tipka 3 - aktivira prekid INT2 (pokreće treptanje LED3)
+#define PIR 2       ///< PIR senzor pokreta - aktivira alarm
+#define SPEAKER 22  ///< Zvučnik - aktivira se na detekciju pokreta
 
-// Varijable za praćenje trajanja blokirajućeg ISR-a
-volatile unsigned long startTimeOfBlockingISR = 0;
-volatile unsigned long stopTimeOfBlockingISR = 0;
-volatile bool blockingISREnded = false;
+// === Globalne varijable ===
+volatile unsigned long startTimeOfBlockingISR = 0; ///< Početak trajanja ISR-a za tipku 2 (za mjerenje trajanja blokade)
+volatile unsigned long stopTimeOfBlockingISR = 0;  ///< Kraj trajanja ISR-a
+volatile bool blockingISREnded = false;            ///< Oznaka da je ISR završio (za ispis u loop-u)
 
-// Zastavica za tipku 3
-volatile bool button3Pressed = false;
+volatile bool button3Pressed = false;              ///< Zastavica za signal da je tipka 3 pritisnuta
+volatile bool movementDetected = false;            ///< Zastavica da je detektiran pokret PIR senzorom
 
-// Zastavica za detekciju pokreta
-volatile bool movementDetected = false;
+const int alarmTimout = 2000;                      ///< Trajanje alarma u milisekundama
 
-// Vrijeme trajanja alarma u milisekundama
-const int alarmTimout = 2000;
-
+/**
+ * @brief Inicijalizacija svih pinova, serijskog porta, timer-a i prekida.
+ */
 void setup() {
-  // Inicijalizacija pinova
   pinMode(LED1, OUTPUT);
   pinMode(LED2, OUTPUT);
   pinMode(LED3, OUTPUT);
@@ -43,16 +65,19 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(BUTTON3), button3ISR, FALLING);
   attachInterrupt(digitalPinToInterrupt(PIR), pirISR, RISING);
 
-  // Postavljanje Timer1 prekida za dimmer efekt (LED4)
-  Timer1.initialize(30000); // 30 ms
+  // Timer prekid za LED4 (efekt disanja)
+  Timer1.initialize(30000); // 30 ms interval
   Timer1.attachInterrupt(dimLED4);
 
   Serial.begin(115200);
 }
 
+/**
+ * @brief Glavna petlja programa - provjerava zastavice koje su postavljene u prekidima.
+ */
 void loop() {
-  // Reakcija na pritisak tipke 3 (treptanje LED3 deset puta)
-  if (button3Pressed) {
+  // Reakcija na pritisak tipke 3 - treptanje LED3
+  if(button3Pressed){
     const int maxBrojPonavljanja = 10;
     const int pauza = 500;
     static int brojac = 0;
@@ -60,41 +85,45 @@ void loop() {
     static bool led1State = false;
     unsigned long newMillis = millis();
 
-    if ((brojac < maxBrojPonavljanja) && (newMillis - lastMillis > pauza)) {
+    if((brojac < maxBrojPonavljanja) && (newMillis - lastMillis > pauza)){
       led1State = !led1State;
       digitalWrite(LED3, led1State);
       brojac++;
       lastMillis = newMillis;
-      Serial.println("Poruka");
+      
     }
 
-    if (brojac >= maxBrojPonavljanja) {
+    if(brojac >= maxBrojPonavljanja){
       brojac = 0;
       button3Pressed = false;
     }
   }
 
-  // Ispis vremena trajanja blokirajućeg ISR-a
-  if (blockingISREnded) {
+  // Ako je ISR za tipku 2 završio, ispiši trajanje
+  if(blockingISREnded){
     blockingISREnded = false;
     Serial.println("\n   Blocking ISR se dogodio!");
     Serial.println("   Početak: " + String(startTimeOfBlockingISR) +
                    "  Kraj: " + String(stopTimeOfBlockingISR) + "\n");
   }
 
-  // Reakcija na detekciju pokreta
-  if (movementDetected) {
+  // Aktivacija alarma nakon detekcije pokreta
+  if(movementDetected){
     tone(SPEAKER, 1000, alarmTimout);
     movementDetected = false;
   }
 }
 
-// ISR za tipku 1 - invertira stanje LED1 uz debouncing
-void invertLED1StateISR() {
+/**
+ * @brief ISR za tipku 1 - invertira stanje LED1.
+ * 
+ * Koristi se za demonstraciju reakcije na pritisak tipke bez blokiranja glavne petlje.
+ * Uključuje debounce logiku kako bi se izbjegla višestruka aktivacija.
+ */
+void invertLED1StateISR(){
   const unsigned int debounceDelay = 50;
   static unsigned long lastInterruptTime = 0;
   unsigned long currentMillis = millis();
-
   static bool led1State = false;
 
   if (currentMillis - lastInterruptTime > debounceDelay) {
@@ -104,17 +133,20 @@ void invertLED1StateISR() {
   }
 }
 
-// ISR za tipku 2 - blokirajući ISR koji trepće LED2
-void blockingISR() {
+/**
+ * @brief Blokirajući ISR za tipku 2 - treptanje LED2.
+ * 
+ * Namjerno blokira procesor kako bi se demonstrirala opasnost dugih ISR funkcija.
+ * Mjerenje trajanja pokazuje koliko to može utjecati na rad ostatka sustava.
+ */
+void blockingISR(){
   startTimeOfBlockingISR = millis();
 
   static bool ledState = false;
-  for (int i = 0; i < 50; i++) {
+  for(int i = 0; i < 50; i++){
     ledState = !ledState;
     digitalWrite(LED2, ledState);
-    
-    // Ručno kašnjenje (zamjena za delay u ISR-u)
-    for (unsigned long b = 0; b < 100000; b++) {
+    for(unsigned long b = 0; b < 100000; b++){
       asm("NOP");
     }
   }
@@ -123,8 +155,13 @@ void blockingISR() {
   blockingISREnded = true;
 }
 
-// ISR za tipku 3 - postavlja zastavicu za treptanje LED3
-void button3ISR() {
+/**
+ * @brief ISR za tipku 3 - postavlja zastavicu za LED3.
+ * 
+ * U glavnoj petlji se koristi zastavica za treptanje LED3, jer ISR ne smije dugo trajati.
+ * Uključena je debounce zaštita.
+ */
+void button3ISR(){
   const unsigned int debounceDelay = 50;
   static unsigned long lastInterruptTime = 0;
   unsigned long currentMillis = millis();
@@ -135,19 +172,23 @@ void button3ISR() {
   }
 }
 
-// Timer ISR za stvaranje dimmer efekta na LED4
+/**
+ * @brief Timer prekid za LED4 - stvara "disanje" (dimanje).
+ * 
+ * Intenzitet LED4 se mijenja svakih 30ms pomoću PWM-a.
+ */
 void dimLED4() {
   static int intensity = 100;
   static bool rising = true;
 
-  if (rising) {
-    if (intensity >= 255) {
+  if(rising){    
+    if(intensity >= 255){
       rising = false;
     } else {
       intensity += 5;
     }
   } else {
-    if (intensity <= 10) {
+    if(intensity <= 10){
       rising = true;
     } else {
       intensity -= 5;
@@ -157,7 +198,12 @@ void dimLED4() {
   analogWrite(LED4, intensity);
 }
 
-// ISR za PIR senzor - detekcija pokreta
-void pirISR() {
+/**
+ * @brief ISR za PIR senzor pokreta.
+ * 
+ * Postavlja zastavicu za aktivaciju alarma u glavnoj petlji.
+ */
+void pirISR(){
   movementDetected = true;
 }
+
