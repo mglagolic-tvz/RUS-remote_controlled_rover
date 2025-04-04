@@ -93,7 +93,6 @@ void loop() {
       digitalWrite(LED3, led1State);
       brojac++;
       lastMillis = newMillis;
-      Serial.println("Poruka");
     }
 
     if(brojac >= maxBrojPonavljanja){
