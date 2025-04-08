@@ -7,7 +7,6 @@
 - Funkcionalnosti
 - Kod
 - Pokretanje
-- Licenca
 
 ## Opis projekta
 
@@ -57,7 +56,7 @@ Kod se može isprobati u Wokwi simulatoru ili na fizičkom Arduino Mega 2560.
 Za pokretanje je potrebno:
 
 1. Učitat `Arduino.ino` datoteku u Arduino IDE
-2. Spojiti komponente prema pinovima iz tablice (gore). Paziti na polaritet LED-ica i pravilan spoj PIR senzora.
+2. Spojiti komponente prema pinovima iz tablice (gore).
 3. Učitati kod na uređaj i otvoriti Serial Monitor za praćenje ispisa
 
 
