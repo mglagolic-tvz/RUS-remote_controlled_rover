@@ -4,8 +4,8 @@
 
 - Opis projekta
 - Komponente
+- Dijagram spoja
 - Funkcionalnosti
-- Kod
 - Dijagrami odaziva na prekid
 - Pokretanje
 
@@ -28,6 +28,10 @@ U projektu su korištene sljedeće komponente:
 | PIR senzor        | 1        |
 | Zvučnik (buzzer)  | 1        |
 
+## Dijagram spoja
+
+![Prikaz spoja](https://github.com/user-attachments/assets/0e297833-a839-4f63-8892-9b0d1ccddf2d)
+
 ## Funkcionalnosti
 
 - **Tipka 1** (INT0, pin 21): Mijenja stanje LED-ice.
@@ -37,11 +41,7 @@ U projektu su korištene sljedeće komponente:
 - **Timer1**: Pokreće prekid svakih 30 ms koji upravlja PWM-om za efekt disanja na LED-ici.
 - **Serijski monitor**: Koristi se za ispis trajanja blokirajućeg ISR-a.
 
-## Dijagram fizičkog povezivanja
-
-![Prikaz spoja](https://github.com/user-attachments/assets/0e297833-a839-4f63-8892-9b0d1ccddf2d)
-
-## Tablica funkcionalnosti
+### Tablica funkcionalnosti
 
 | Oznaka | Funkcija                                                  |
 | ------ | --------------------------------------------------------- |
@@ -67,8 +67,6 @@ nastavljaju se dalje (blinkanje LED 3) a prekid koji se dogodio za vrijeme
 izvršavanja blokirajuće prekidne rutine naknadno će se izvršiti po završetku blokirajuće rutine.
 
 ![ZAJEDNO](https://github.com/user-attachments/assets/f07d1468-7d18-4fc6-a92a-c1d042704310)
-
-
 
 ## Pokretanje
 
