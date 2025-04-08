@@ -6,6 +6,7 @@
 - Komponente
 - Funkcionalnosti
 - Kod
+- Dijagrami odaziva na prekid
 - Pokretanje
 
 ## Opis projekta
@@ -18,13 +19,14 @@ Glavni cilj je demonstrirati kako se koriste različite vrste prekida i na koji 
 
 U projektu su korištene sljedeće komponente:
 
-| Komponenta        | Količina | Pinovi        |
-| ----------------- | -------- | ------------- |
-| Arduino Mega 2560 | 1        | -             |
-| Tipkalo           | 3        | 21, 20, 19    |
-| LED diode         | 4        | 11, 12, 13, 8 |
-| PIR senzor        | 1        | 2             |
-| Zvučnik (buzzer)  | 1        | 22            |
+| Komponenta        | Količina |
+| ----------------- | -------- |
+| Arduino Mega 2560 | 1        |
+| Tipkalo           | 3        |
+| LED diode         | 4        |
+| Otpornici (1 kOhm)| 4        |
+| PIR senzor        | 1        |
+| Zvučnik (buzzer)  | 1        |
 
 ## Funkcionalnosti
 
@@ -35,9 +37,11 @@ U projektu su korištene sljedeće komponente:
 - **Timer1**: Pokreće prekid svakih 30 ms koji upravlja PWM-om za efekt disanja na LED-ici.
 - **Serijski monitor**: Koristi se za ispis trajanja blokirajućeg ISR-a.
 
-###
+## Dijagram fizičkog povezivanja
 
-### Tablica funkcionalnosti
+![Prikaz spoja](https://github.com/user-attachments/assets/0e297833-a839-4f63-8892-9b0d1ccddf2d)
+
+## Tablica funkcionalnosti
 
 | Oznaka | Funkcija                                                  |
 | ------ | --------------------------------------------------------- |
@@ -48,6 +52,23 @@ U projektu su korištene sljedeće komponente:
 | FR-5   | Detekcija pokreta i aktivacija alarma                     |
 | FR-6   | Ispis statusa na serijski monitor                         |
 
+## Dijagrami odaziva na prekid
+
+Dijagrami u nastavku prikazuju odaziv svake ledice na ulazni signal.
+
+![INT0](https://github.com/user-attachments/assets/1156fa31-ca2b-44c7-96f3-3612c177e922)
+![INT1](https://github.com/user-attachments/assets/dbd0bac0-b8bc-4521-8fba-0eb4311658af)
+![INT2](https://github.com/user-attachments/assets/8f93099b-690a-4205-92c2-211339e3acea)
+
+Iz sljedećeg dijagrama vidljivo je kako blokirajuća prekidna rutina onemogućuje 
+izvršavanje drugih prekidnih rutina i ostatka koda. Kao što je vidljivo, 
+kada bkolirajuća prekidna rutina završi, prethodno pokrenuti zadatci 
+nastavljaju se dalje (blinkanje LED 3) a prekid koji se dogodio za vrijeme 
+izvršavanja blokirajuće prekidne rutine naknadno će se izvršiti po završetku blokirajuće rutine.
+
+![ZAJEDNO](https://github.com/user-attachments/assets/f07d1468-7d18-4fc6-a92a-c1d042704310)
+
+
 
 ## Pokretanje
 
@@ -55,8 +76,8 @@ Kod se može isprobati u Wokwi simulatoru ili na fizičkom Arduino Mega 2560.
 
 Za pokretanje je potrebno:
 
-1. Učitat `Arduino.ino` datoteku u Arduino IDE
-2. Spojiti komponente prema pinovima iz tablice (gore).
+1. Učitati `Arduino.ino` datoteku u Arduino IDE
+2. Spojiti komponente prema slici (gore).
 3. Učitati kod na uređaj i otvoriti Serial Monitor za praćenje ispisa
 
 
