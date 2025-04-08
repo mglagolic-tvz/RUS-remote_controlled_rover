@@ -1,4 +1,4 @@
-# Projekt: Rad s prekidima na ugradbenim platformama
+# Projekt: Rad s prekidima u ugradbenim platformama
 
 ## Sadržaj
 
