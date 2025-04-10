@@ -13,6 +13,8 @@
 Projekt služi kao jednostavan primjer kako prilagoditi ugradbene platforme (npr. Arduino) da koriste što manje energije.
 Cilj projekta je demonstrirati kako koristiti stanja uštede energije koja dolaze sa pojedinom platformom.
 
+Korišten je LowPower.h library
+
 ## Komponente
 
 U projektu su korištene sljedeće komponente:
@@ -32,6 +34,7 @@ U projektu su korištene sljedeće komponente:
 ## Funkcionalnosti
 
 - **Reagiranje na pokret** - šalje poruku da je pokret zamijećen.
+- **Ulazak u sleep mode** - nakon slanja poruke ulazi u sleep mode
 
 ## Pokretanje
 
@@ -42,3 +45,6 @@ Za pokretanje je potrebno:
 1. Učitati `Arduino.ino` datoteku u Arduino IDE
 2. Spojiti komponente prema slici (gore).
 3. Učitati kod na uređaj i otvoriti Serial Monitor za praćenje ispisa
+
+### Link na Wokwi projekt
+https://wokwi.com/projects/427698273234965505
