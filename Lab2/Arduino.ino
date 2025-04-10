@@ -23,6 +23,8 @@ void setup() {
   pinMode(wakeUpPin, INPUT);  ///< Postavljanje pina za buđenje kao ulaz
   pinMode(led, OUTPUT);       ///< Postavljanje pina za LED kao izlaz
   Serial.begin(9600);         ///< Pokretanje serijske komunikacije na brzini od 9600 bps
+
+  attachInterrupt(digitalPinToInterrupt(wakeUpPin), wakeUp, RISING);  ///< Postavljanje prekida za pin 2 (interni broj prekida 4). Kada se dogodi rastući rub signala (RISING), poziva se funkcija wakeUp()
 }
 
 /**
@@ -32,11 +34,7 @@ void setup() {
  * vanjskog signala, stavlja uređaj u stanje spavanja i nakon buđenja pokreće odgovarajuće radnje.
  */
 void loop() {
-  attachInterrupt(0, wakeUp, RISING);  ///< Postavljanje prekida za pin 2 (interni broj prekida 4). Kada se dogodi rastući rub signala (RISING), poziva se funkcija wakeUp()
-
   LowPower.powerDown(SLEEP_FOREVER, ADC_OFF, BOD_OFF);  ///< Aktivacija načina štednje energije (mikrokontroler će spavati)
-
-  detachInterrupt(0);  ///< Odlazi iz prekida (prekid se deaktivira nakon što je mikroprocesor probuđen)
 
   Serial.println("Registriran pokret!");  ///< Ispisivanje poruke na serijski monitor nakon buđenja
   Serial.flush();  ///< Čisti serijski bafer (osigurava da svi podaci budu poslani)
