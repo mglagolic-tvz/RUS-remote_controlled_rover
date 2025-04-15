@@ -9,7 +9,9 @@ nepristupačnih prostora.
 # Funkcijski zahtjevi #
 1. Kretanje u prostoru na daljinsko upravljanje.
 2. Baterijsko napajanje.
-3. Bežični prijenos slike.
+3. Bežični prijenos slike putem WiFi-a na pametni telefon ili računalo.
 4. Artikulacijski nosač kamere kako bi se kamera neovisno o platformi mogla kretati.
 5. Rasvijetna tijela za kretanje u mračnim prostorima.
-6. Domet stotinjak metara u otvorenom prostoru.
+6. Mjerenje napona baterije.
+7. Standardizirati komunikacijski protokol kako bi se moglo koristiti više različitih tipova kontrolera (kontroler specifično dizajniran za ovaj rover, PlayStation kontroler, tipkovnica za računalo...).
+8. Domet pedesetak metara u otvorenom prostoru.
