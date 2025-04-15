@@ -15,3 +15,14 @@ nepristupačnih prostora.
 6. Mjerenje napona baterije.
 7. Standardizirati komunikacijski protokol kako bi se moglo koristiti više različitih tipova kontrolera (kontroler specifično dizajniran za ovaj rover, PlayStation kontroler, tipkovnica za računalo...).
 8. Domet pedesetak metara u otvorenom prostoru.
+
+# Komponente #
+
+| Komponenta        | Količina |
+| ----------------- | -------- |
+| Arduino Nano      | 1        |
+| ESP32-CAM         | 1        |
+| OV2640 (120° FOV) | 1        |
+| Platforma sa gusjenicama | 1        |
+| nrf24l01+pa+lna modul        | 2        |
+| Artikulacijski nosač za kameru  | 1        |
