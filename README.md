@@ -51,10 +51,14 @@ Korištena varijanta OV2640 senzora opremljena je lećama sa **120° FOV (Field 
 ## Blok sheme
 
 ### Predajnik
-![blok_shema_predajnik drawio](https://github.com/user-attachments/assets/ed0e8707-699d-41ea-8bc3-c1ebee23289e)
+![blok_shema_predajnik drawio](https://github.com/user-attachments/assets/3c8b8bbf-0eb3-4c24-9e46-f98edcd10e87)
+
+
+
 
 ### Robot
-![blok_shema_kontroler drawio](https://github.com/user-attachments/assets/6a426cbe-30f8-484f-84c3-ec68f17f3ff7)
+![blok_shema_kontroler drawio](https://github.com/user-attachments/assets/47ea0b02-8f2b-443d-82a4-00d7820ead77)
+
 
 
 
