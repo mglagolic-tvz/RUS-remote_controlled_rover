@@ -14,6 +14,9 @@
 #define STOP_BYTE 0x55
 #define PACKET_MAX_SIZE 32  // Maksimalna veličina paketa
 
+// Definicija pinova
+#define LED_EMPTY_BATTERY 13
+
 USB Usb;
 BTD Btd(&Usb);
 PS3BT PS3(&Btd);
@@ -36,10 +39,10 @@ uint8_t servoV = servoVDefaultPosition;
 uint8_t ledIntensity = 0;
 int led_intensity_counter;
 
-bool sleep = false;
+//bool sleep = false;
 
 void setup() {
-  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(LED_EMPTY_BATTERY, OUTPUT);
   Serial.begin(9600);
 
   if (Usb.Init() == -1) {
@@ -50,15 +53,27 @@ void setup() {
       delay(200);
     }
   }
+  digitalWrite(LED_EMPTY_BATTERY, LOW);
 }
 
 void loop() {
 
   Usb.Task();
 
+  if(Serial.available()){
+    uint8_t battery_state = Serial.read();
+    if(battery_state == 0x01){
+      digitalWrite(LED_EMPTY_BATTERY, HIGH);
+    }
+    if(battery_state == 0x00){
+      digitalWrite(LED_EMPTY_BATTERY, LOW);
+    }
+  }
+
   unsigned long currentMillis = millis();
 
   if (PS3.PS3Connected && currentMillis - lastSendTime >= sendInterval) {
+    //sleep = false;
     lastSendTime = currentMillis;
 
     if (!PS3.getButtonPress(R1)) {
@@ -132,16 +147,19 @@ void loop() {
     }
 
     if (PS3.getButtonClick(PS)) {
-      sleep = true;
+      //sleep = true;
       PS3.disconnect();
     }
-
+/*
     if (PS3.getButtonClick(TRIANGLE)) {
       digitalWrite(LED_BUILTIN, HIGH);
     }
     if (PS3.getButtonClick(CIRCLE)) {
       digitalWrite(LED_BUILTIN, LOW);
-    }
+    }*/
+    /*if (PS3.getButtonClick(SELECT)) {
+      sleep = true;
+    }*/
     /*
     if (PS3.getButtonClick(CROSS)) {}
     if (PS3.getButtonClick(SQUARE)) {}
@@ -165,6 +183,7 @@ void loop() {
 
     // Pošalji paket
     Serial.write(packet, packetSize);
+    //Serial.println("povezan sam");
   }
 }
 
@@ -186,11 +205,11 @@ void createPacket() {
   addToPacket(0x07, ledIntensity);
 
   // postavljanje paketa za spavanje
-  if(sleep)
-    addToPacket(0x08, 0x01);
+  /*if(sleep)
+    addToPacket(0x09, 0x01);
   else{
-    addToPacket(0x08, 0x00);
-  }
+    addToPacket(0x09, 0x00);
+  }*/
 
   // Stop byte
   packet[packetSize++] = STOP_BYTE;
