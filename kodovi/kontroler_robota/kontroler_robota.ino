@@ -10,13 +10,19 @@
 #define STOP_BYTE  0x55
 #define PACKET_MAX_SIZE 32
 
+// napon baterije ispd kojega se baterija smatre praznom
+#define NAPON_BATERIJE_LIMIT 7.4 // Volta
+
 
 // varijable za paketnu komunikaciju
 uint8_t packet[PACKET_MAX_SIZE];
 uint8_t packetSize = 0;
 bool receiving = false;
 unsigned long lastPacketTime = 0;
-const unsigned long timeoutTime = 500; // ms
+const unsigned long packetTimeoutTime = 500; // ms
+
+unsigned long lastBatteryCheckTime = 0;
+const unsigned long batteryChackInterval = 1000; // ms
 
 //const uint8_t kod_za_pocetno_stanje_servo = 0; //ako primi ovu velicinu postavlja se u dolje definirane pozicije
 const int servoHRightLimit = 0;
@@ -30,10 +36,13 @@ Servo servoV;
 
 uint8_t flashIntensity = 0;
 
+bool trenutni_sleep_state = false;
+
 void setup() {
   pinMode(BUCK_5V_ENABLE_PIN, OUTPUT);
   pinMode(BUCK_3V_ENABLE_PIN, OUTPUT);
   pinMode(HC12_SET_PIN, OUTPUT);
+  pinMode(ESP_SLEEP_PIN, OUTPUT);
 
   pinMode(MOTOR_1_PWM, OUTPUT);
   pinMode(MOTOR_1_A, OUTPUT);
@@ -41,6 +50,8 @@ void setup() {
   pinMode(MOTOR_2_PWM, OUTPUT);
   pinMode(MOTOR_2_A, OUTPUT);
   pinMode(MOTOR_2_B, OUTPUT);
+
+  pinMode(BATTERY_VOLTAGE_PIN, INPUT);
 
   servoH.attach(SERVO_H_SIGNAL);
   servoV.attach(SERVO_V_SIGNAL);
@@ -50,6 +61,8 @@ void setup() {
   digitalWrite(BUCK_3V_ENABLE_PIN, HIGH); // ukljuci 3.3V napajanje
   digitalWrite(BUCK_5V_ENABLE_PIN, HIGH); // ukljuci 5V napajanje
   digitalWrite(HC12_SET_PIN, HIGH); //onemoguci AT mod
+  digitalWrite(ESP_SLEEP_PIN, HIGH);
+  
 
   Serial.begin(9600);
 
@@ -67,9 +80,23 @@ void loop() {
   receivePacket();
 
   // Timeout detekcija
-  if (millis() - lastPacketTime > timeoutTime) {
+  if (millis() - lastPacketTime > packetTimeoutTime) {
     // Nema novih podataka -> sigurnosna reakcija
-    stopRobot();
+    //stopRobot();
+    if (trenutni_sleep_state == false){
+      trenutni_sleep_state = true;
+      enterSleep();
+    }    
+  } else {
+    if (trenutni_sleep_state == true){
+      trenutni_sleep_state = false;
+      wakeUp();
+    }
+  }
+
+  if (millis() - lastBatteryCheckTime > batteryChackInterval) {
+    lastBatteryCheckTime = millis();
+    checkBatteryState();
   }
 
 }
@@ -116,23 +143,15 @@ void handleData(uint8_t id, uint8_t value) {
   switch (id) {
     case 0x01: // motor 1 speed
       setMotor1Speed(value);
-      //Serial.print("motor1");
-      //Serial.println(value);
       break;
     case 0x02: // motor 2 speed
       setMotor2Speed(value);
-      //Serial.print("motor2");
-      //Serial.println(value);
       break;
     case 0x03: // motor 1 dir
       setMotor1Dir(value);
-      //Serial.print("motor1dir");
-      //Serial.println(value);
       break;    
     case 0x04: // motor 2 dir
       setMotor2Dir(value);
-      //Serial.print("motor2dir");
-      //Serial.println(value);
       break; 
     case 0x05: // servo H
       setServoH(value);
@@ -143,6 +162,10 @@ void handleData(uint8_t id, uint8_t value) {
     case 0x07: // flash
       setFlashIntensity(value);
       break;
+    //case 0x09: // sleep
+      //Serial.println("moram spavati");
+      //setSleepState(value);
+      //break;
     default:
       // Nepoznat ID, ignoriraj
       break;
@@ -198,7 +221,6 @@ void setServoH(uint8_t angle){
   
   if(kut != angle ){
     kut = angle;
-    Serial.println(kut);
     servoH.write((int) map(kut, 255, 0, servoHRightLimit, servoHLeftLimit));
   }
 
@@ -208,13 +230,18 @@ void setServoV(uint8_t angle){
 
   if(kut != angle ){
     kut = angle;
-    Serial.println(kut);
     servoV.write((int) map(kut, 0, 255, servoVUpLimit, servoVdownLimit));
   }
 }
 void setFlashIntensity(uint8_t intensity){
   flashIntensity = intensity;
 }
+/*void setSleepState(uint8_t state){
+  if(state == 0x00)
+    enterSleep();
+  if(state == 0x01)
+    wakeUp();
+}*/
 
 void stopRobot() {
   setMotor1Speed(0);
@@ -223,6 +250,28 @@ void stopRobot() {
   setFlashIntensity(0);
 
 }
+void enterSleep(){
+  Serial.println("spavam");
+  stopRobot();
+  digitalWrite(BUCK_5V_ENABLE_PIN, LOW);
+  digitalWrite(ESP_SLEEP_PIN, LOW);
+}
+void wakeUp(){
+  Serial.println("budim se");
+  digitalWrite(BUCK_5V_ENABLE_PIN, HIGH);
+  digitalWrite(ESP_SLEEP_PIN, HIGH);
+}
+void checkBatteryState(){
+  unsigned int izmjerenaVrijednost = analogRead(BATTERY_VOLTAGE_PIN);
+  unsigned int napon = map(izmjerenaVrijednost, 0, 1023, 0, 20);
+  if (napon < NAPON_BATERIJE_LIMIT){
+    Serial.write(0x01);
+  }
+  else{
+    Serial.write(0x00);
+  }
+}
+
 
 // callback funkcija za postavljanje intenziteta flash ledice esp32-cam modula
 void setFlashIntensity() {
@@ -230,14 +279,3 @@ void setFlashIntensity() {
 
 }
 
-/*
-if(kut != angle && kod_za_pocetno_stanje_servo != angle){
-    kut = angle;
-    Serial.println(kut);
-    servoV.write((int) map(kut, 0, 255, 60, 120));
-  }
-  if(kut != angle && kod_za_pocetno_stanje_servo == angle){
-    kut = angle;
-    servoV.write(servoHDefaultState);
-  }
-*/
