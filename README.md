@@ -170,7 +170,7 @@ Isključivanje regulatora napona za ESP i HC-12 hardverski je već omogućeno. O
 - `Servo.h` — moguće preuzeti putem Library Managera u Arduino IDE-u
 - Ostale standardne Arduino knjižnice.
 
-Kod će biti dostupan u `/firmware` direktoriju repozitorija.
+Kod će biti dostupan u `/kodovi` direktoriju repozitorija.
 
 ---
 
