@@ -88,7 +88,35 @@ Korištena varijanta OV2640 senzora opremljena je lećama sa **120° FOV (Field 
 ![blok_shema_kontroler drawio](https://github.com/user-attachments/assets/47ea0b02-8f2b-443d-82a4-00d7820ead77)
 
 ---
+## Opis komunikacijskog protokola
 
+Za komunikaciju između predajnika i robota koristi se jednostavan binarni protokol temeljen na slanju podataka u byte formatu.  
+Protokol je dizajniran tako da bude lagan za obradu i otporan na pogreške te omogućava jednostavno proširivanje.
+
+### Struktura paketa
+Paket podataka koji se šalje od predajnika prema robotu sastoji se od sljedećih elemenata:
+
+- **Start byte** (`0xAA`) – označava početak paketa.
+- **Podaci** – niz parova `ID` i `vrijednost`:
+  - `ID` definira tip podatka (npr. brzina motora 1, rotacija kamere, upravljanje svjetlom itd.),
+  - `vrijednost` predstavlja konkretan podatak (npr. brzina motora, kut serva, uključeno/isključeno svjetlo) koji je 8-bitna vrijednost.
+- **Stop byte** (`0x55`) – označava kraj paketa.
+
+### Primjer paketa
+
+| Byte pozicija | Vrijednost | Opis              |
+| ------------- | ---------- | ----------------- |
+| 0             | `0xAA`      | Start byte        |
+| 1             | `0x01`      | ID - Brzina motora 1 |
+| 2             | `0x7F`      | Vrijednost (127 = pola brzine) |
+| 3             | `0x02`      | ID - brzina motora 2 |
+| 4             | `0x00`      | Vrijednost (0 = ugašen) |
+| 5             | `0x03`      | ID - smjer motora 1 |
+| 6             | `0x01`      | Vrijednost (1 = naprijed) |
+niz parova ID-vrijednost se nastavlja
+| N             | `0x55`      | Stop byte         |
+
+---
 ## Upute za korištenje
 
 1. Spojiti predajnik i robota prema shemi u repozitoriju (trenutno nije dostupna, bit će uskoro).
@@ -149,7 +177,7 @@ Kod će biti dostupan u `/firmware` direktoriju repozitorija.
 ## Poznate greške i ograničenja
 
 - Povremeni gubitak komunikacije između HC-12 modula na većim udaljenostima (>50m bez izravne vidljivosti).
-- ESP32-CAM ponekad gubi Wi-Fi vezu ako signal nije dovoljno jak, što može uzrokovati zastajkivanja u prijenosu slike ili prekid veze.
+- ESP32-CAM može izgubiti Wi-Fi vezu ako signal nije dovoljno jak, što može uzrokovati zastajkivanja u prijenosu slike ili prekid veze.
 
 ---
 
