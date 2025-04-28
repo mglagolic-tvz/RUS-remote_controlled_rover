@@ -194,3 +194,5 @@ void addToPacket(uint8_t id, uint8_t value) {
     packet[packetSize++] = value;  ///< Dodaj vrijednost podatka
   }
 }
+
+
