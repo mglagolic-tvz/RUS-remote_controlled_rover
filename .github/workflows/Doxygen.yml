@@ -37,13 +37,13 @@ jobs:
 
       - name: Generate Documentation for predajnik
         run: |
-          cd /kodovi/predajnik/  # Change to the directory containing the Doxyfile
+          cd kodovi/predajnik/  # Change to the directory containing the Doxyfile
           doxygen Doxyfile || { echo "Doxygen failed"; exit 1; }  # Run Doxygen, exit if it fails
           if [ ! -d "docs/html" ]; then echo "Error: docs/html not found!"; exit 1; fi  # Check if the HTML output directory exists
       
       - name: Generate Documentation for kontroler
         run: |
-          cd /kodovi/kontroler_robota/  # Change to the directory containing the Doxyfile
+          cd kodovi/kontroler_robota/  # Change to the directory containing the Doxyfile
           doxygen Doxyfile || { echo "Doxygen failed"; exit 1; }  # Run Doxygen, exit if it fails
           if [ ! -d "docs/html" ]; then echo "Error: docs/html not found!"; exit 1; fi  # Check if the HTML output directory exists
 
