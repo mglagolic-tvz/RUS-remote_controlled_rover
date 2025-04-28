@@ -331,4 +331,3 @@ void checkBatteryState() {
 void setFlashIntensity() {
   Wire.write(flashIntensity);     // Pošalji intenzitet za flash led
 }
-
