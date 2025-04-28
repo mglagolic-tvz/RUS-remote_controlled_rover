@@ -131,7 +131,7 @@ niz parova ID-vrijednost se nastavlja
 - Za uspješan upload koda na ESP32-CAM potrebno je instalirati "esp32" (by Espressif Systems) iz Board Managera u Arduino IDE-u.
 
 ### Povezivanje računala/mobitela s ESP32-CAM modulom
-U kodu za kameru koji se nalazi u repozitoriju (`kodovi/kamera/kamera.ino`) potrebno je izmijeniti varijable SSID i Password tako da odgovaraju Wi-Fi Access Point-u kojim raspolažemo. To može biti Wi-Fi kućna mreža ili HotSpot pametnog telefona. Nakon dodavanja SSID i Password parametara, potrebno je kod usnimiti u ESP32-CAM. 
+U kodu za kameru koji se nalazi u repozitoriju (`kodovi/kamera/kamera.ino`) potrebno je izmijeniti varijable SSID i Password tako da odgovaraju Wi-Fi Access Point-u kojim raspolažemo. To može biti Wi-Fi kućna mreža ili HotSpot pametnog telefona. Nakon dodavanja SSID i Password parametara, potrebno je kod usnimiti u ESP32-CAM. Preporuča se ne mijenjati ništa osim SSID i Password parametara jer je lod dosta složen.
 Nakon snimanja koda, dok je ESP32-CAM još povezan na računalo putem programatora, ESP32-CAM će u serijsku konzolu ispisati svoju IP adresu koju je dobio od DHCP servera. U praksi ta adresa se rijetko mijenja dokle god je ESP na istoj mreži, no treba imati na umu da se može promijeniti. Ako ne možemo dobiti ping od ESP-a, potrebno ga je isključiti iz robota, spojiti na programator i ponovno u serijskoj konzoli pročitati novu IP adresu. 
 
 **Napomena:** Da bi ESP ispisao svoju IP adresu i ispravno se pokrenuo, korištena Wi-Fi mreža **mora** biti dostupna.
