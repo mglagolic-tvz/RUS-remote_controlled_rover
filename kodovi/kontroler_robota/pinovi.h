@@ -12,3 +12,7 @@
 
 #define SERVO_H_SIGNAL 10
 #define SERVO_V_SIGNAL 9
+
+#define ESP_SLEEP_PIN 7
+
+#define BATTERY_VOLTAGE_PIN A6
