@@ -10,35 +10,39 @@
 #define STOP_BYTE  0x55
 #define PACKET_MAX_SIZE 32
 
-// napon baterije ispd kojega se baterija smatre praznom
+// napon baterije ispod kojeg se baterija smatra praznom
 #define NAPON_BATERIJE_LIMIT 7.4 // Volta
 
 
 // varijable za paketnu komunikaciju
-uint8_t packet[PACKET_MAX_SIZE];
-uint8_t packetSize = 0;
-bool receiving = false;
-unsigned long lastPacketTime = 0;
-const unsigned long packetTimeoutTime = 500; // ms
+uint8_t packet[PACKET_MAX_SIZE]; ///< Paket za komunikaciju
+uint8_t packetSize = 0; ///< Trenutna veličina paketa
+bool receiving = false; ///< Indikator da li se trenutno prima paket
+unsigned long lastPacketTime = 0; ///< Vrijeme zadnje zaprimljene poruke
+const unsigned long packetTimeoutTime = 500; ///< Maksimalni interval čekanja na paket u ms
 
-unsigned long lastBatteryCheckTime = 0;
-const unsigned long batteryChackInterval = 1000; // ms
+unsigned long lastBatteryCheckTime = 0; ///< Vrijeme zadnje provjere baterije
+const unsigned long batteryChackInterval = 1000; ///< Interval provjere baterije u ms
 
-//const uint8_t kod_za_pocetno_stanje_servo = 0; //ako primi ovu velicinu postavlja se u dolje definirane pozicije
-const int servoHRightLimit = 0;
-const int servoHLeftLimit = 150;
-const int servoHDefaultState = 72; // 0 desno 160 lijevo 72 ravno
-const int servoVUpLimit = 60;
-const int servoVdownLimit = 180;
-const int servoVDefaultState = 160; // 60 gore 180 dolje 160 ravno
-Servo servoH;
-Servo servoV;
+// konstante za postavke servo motora
+const int servoHRightLimit = 0; ///< Desna granica za horizontalni servo
+const int servoHLeftLimit = 150; ///< Lijeva granica za horizontalni servo
+const int servoHDefaultState = 72; ///< Defaultna pozicija za horizontalni servo (ravno)
+const int servoVUpLimit = 60; ///< Gornja granica za vertikalni servo
+const int servoVdownLimit = 180; ///< Donja granica za vertikalni servo
+const int servoVDefaultState = 160; ///< Defaultna pozicija za vertikalni servo (ravno)
+Servo servoH; ///< Horizontalni servo
+Servo servoV; ///< Vertikalni servo
 
-uint8_t flashIntensity = 0;
+uint8_t flashIntensity = 0; ///< Intenzitet flash ledice
 
-bool trenutni_sleep_state = false;
+bool trenutni_sleep_state = false; ///< Trenutno stanje spavanja
 
+/**
+ * @brief Funkcija koja se poziva pri početnoj inicijalizaciji sustava.
+ */
 void setup() {
+  // Inicijalizacija pinova
   pinMode(BUCK_5V_ENABLE_PIN, OUTPUT);
   pinMode(BUCK_3V_ENABLE_PIN, OUTPUT);
   pinMode(HC12_SET_PIN, OUTPUT);
@@ -53,31 +57,37 @@ void setup() {
 
   pinMode(BATTERY_VOLTAGE_PIN, INPUT);
 
+  // Inicijalizacija servo motora
   servoH.attach(SERVO_H_SIGNAL);
   servoV.attach(SERVO_V_SIGNAL);
   servoH.write(servoHDefaultState);
   servoV.write(servoVDefaultState);
 
-  digitalWrite(BUCK_3V_ENABLE_PIN, HIGH); // ukljuci 3.3V napajanje
-  digitalWrite(BUCK_5V_ENABLE_PIN, HIGH); // ukljuci 5V napajanje
-  digitalWrite(HC12_SET_PIN, HIGH); //onemoguci AT mod
+  // Uključivanje napajanja
+  digitalWrite(BUCK_3V_ENABLE_PIN, HIGH);
+  digitalWrite(BUCK_5V_ENABLE_PIN, HIGH);
+  digitalWrite(HC12_SET_PIN, HIGH); 
   digitalWrite(ESP_SLEEP_PIN, HIGH);
-  
 
+  // Pokretanje serijske komunikacije
   Serial.begin(9600);
 
+  // Inicijalizacija I2C komunikacije
   Wire.begin(I2C_SLAVE_ADDR);
   Wire.onRequest(setFlashIntensity);
 
+  // Postavljanje početnih smjerova za motore
   digitalWrite(MOTOR_1_A, HIGH);
   digitalWrite(MOTOR_2_A, HIGH);
   digitalWrite(MOTOR_1_B, LOW);
   digitalWrite(MOTOR_2_B, LOW);
-
 }
 
+/**
+ * @brief Glavna funkcija koja se izvršava u petlji.
+ */
 void loop() {
-  receivePacket();
+  receivePacket(); ///< Primanje paketa
 
   // Timeout detekcija
   if (millis() - lastPacketTime > packetTimeoutTime) {
@@ -85,22 +95,25 @@ void loop() {
     //stopRobot();
     if (trenutni_sleep_state == false){
       trenutni_sleep_state = true;
-      enterSleep();
+      enterSleep(); ///< Prelaz u stanje spavanja
     }    
   } else {
     if (trenutni_sleep_state == true){
       trenutni_sleep_state = false;
-      wakeUp();
+      wakeUp(); ///< Buđenje sustava
     }
   }
 
+  // Provjera baterije
   if (millis() - lastBatteryCheckTime > batteryChackInterval) {
     lastBatteryCheckTime = millis();
-    checkBatteryState();
+    checkBatteryState(); ///< Provjera stanja baterije
   }
-
 }
 
+/**
+ * @brief Funkcija za primanje paketa sa serijskog porta.
+ */
 void receivePacket() {
   while (Serial.available()) {
     uint8_t incomingByte = Serial.read();
@@ -114,10 +127,10 @@ void receivePacket() {
       if (incomingByte == STOP_BYTE) {
         receiving = false;
         lastPacketTime = millis();
-        processPacket();
+        processPacket(); ///< Obrada paketa nakon što je primljen
       } else {
         if (packetSize < PACKET_MAX_SIZE) {
-          packet[packetSize++] = incomingByte;
+          packet[packetSize++] = incomingByte; ///< Dodavanje bytea u paket
         } else {
           // Prevelik paket, reset
           receiving = false;
@@ -128,17 +141,26 @@ void receivePacket() {
   }
 }
 
+/**
+ * @brief Funkcija za obradu primljenih podataka iz paketa.
+ */
 void processPacket() {
   for (uint8_t i = 0; i < packetSize; i += 2) {
     if (i + 1 >= packetSize) break; // Provjera da li imamo cijeli par (ID + VALUE)
 
-    uint8_t id = packet[i];
-    uint8_t value = packet[i + 1];
+    uint8_t id = packet[i]; ///< ID podatka
+    uint8_t value = packet[i + 1]; ///< Vrijednost podatka
 
-    handleData(id, value);
+    handleData(id, value); ///< Obrada podataka
   }
 }
 
+/**
+ * @brief Funkcija za upravljanje podacima na temelju ID-a.
+ * 
+ * @param id ID podatka koji se prima
+ * @param value Vrijednost koja se prima za dani ID
+ */
 void handleData(uint8_t id, uint8_t value) {
   switch (id) {
     case 0x01: // motor 1 speed
@@ -162,31 +184,40 @@ void handleData(uint8_t id, uint8_t value) {
     case 0x07: // flash
       setFlashIntensity(value);
       break;
-    //case 0x09: // sleep
-      //Serial.println("moram spavati");
-      //setSleepState(value);
-      //break;
     default:
       // Nepoznat ID, ignoriraj
       break;
   }
 }
 
-void setMotor1Speed(uint8_t speed){
+// Funkcije za upravljanje motorima, servo motorima i intenzitetom svjetla:
+
+/**
+ * @brief Funkcija za postavljanje brzine motora 1.
+ */
+void setMotor1Speed(uint8_t speed) {
   static uint8_t brzina = 0;
   if(brzina != speed){
     brzina = speed;
     analogWrite(MOTOR_1_PWM, speed);
   }
 }
-void setMotor2Speed(uint8_t speed){
+
+/**
+ * @brief Funkcija za postavljanje brzine motora 2.
+ */
+void setMotor2Speed(uint8_t speed) {
   static uint8_t brzina = 0;
   if(brzina != speed){
     brzina = speed;
     analogWrite(MOTOR_2_PWM, speed);
   }
 }
-void setMotor1Dir(uint8_t dir){
+
+/**
+ * @brief Funkcija za postavljanje smjera motora 1.
+ */
+void setMotor1Dir(uint8_t dir) {
   static uint8_t lastDir = 2;
   if(lastDir != dir){
     if(dir > 0){
@@ -201,7 +232,11 @@ void setMotor1Dir(uint8_t dir){
     }
   }
 }
-void setMotor2Dir(uint8_t dir){
+
+/**
+ * @brief Funkcija za postavljanje smjera motora 2.
+ */
+void setMotor2Dir(uint8_t dir) {
   static uint8_t lastDir = 2;
   if(lastDir != dir){
     if(dir > 0){
@@ -216,16 +251,23 @@ void setMotor2Dir(uint8_t dir){
     }
   }
 }
-void setServoH(uint8_t angle){
+
+/**
+ * @brief Funkcija za postavljanje horizontalnog servo motora.
+ */
+void setServoH(uint8_t angle) {
   static uint8_t kut = -1;
   
   if(kut != angle ){
     kut = angle;
     servoH.write((int) map(kut, 255, 0, servoHRightLimit, servoHLeftLimit));
   }
-
 }
-void setServoV(uint8_t angle){
+
+/**
+ * @brief Funkcija za postavljanje vertikalnog servo motora.
+ */
+void setServoV(uint8_t angle) {
   static uint8_t kut = -1;
 
   if(kut != angle ){
@@ -233,49 +275,59 @@ void setServoV(uint8_t angle){
     servoV.write((int) map(kut, 0, 255, servoVUpLimit, servoVdownLimit));
   }
 }
-void setFlashIntensity(uint8_t intensity){
+
+/**
+ * @brief Funkcija za memorira zadani intenzitet flash LED-a.
+ */
+void setFlashIntensity(uint8_t intensity) {
   flashIntensity = intensity;
 }
-/*void setSleepState(uint8_t state){
-  if(state == 0x00)
-    enterSleep();
-  if(state == 0x01)
-    wakeUp();
-}*/
 
+/**
+ * @brief Funkcija za zaustavljanje robota.
+ */
 void stopRobot() {
   setMotor1Speed(0);
   setMotor2Speed(0);
 
   setFlashIntensity(0);
-
 }
-void enterSleep(){
+
+/**
+ * @brief Funkcija za prelazak u stanje spavanja.
+ */
+void enterSleep() {
   Serial.println("spavam");
   stopRobot();
   digitalWrite(BUCK_5V_ENABLE_PIN, LOW);
   digitalWrite(ESP_SLEEP_PIN, LOW);
 }
-void wakeUp(){
+
+/**
+ * @brief Funkcija za buđenje robota.
+ */
+void wakeUp() {
   Serial.println("budim se");
   digitalWrite(BUCK_5V_ENABLE_PIN, HIGH);
   digitalWrite(ESP_SLEEP_PIN, HIGH);
 }
-void checkBatteryState(){
+
+/**
+ * @brief Funkcija za provjeru stanja baterije.
+ */
+void checkBatteryState() {
   unsigned int izmjerenaVrijednost = analogRead(BATTERY_VOLTAGE_PIN);
   unsigned int napon = map(izmjerenaVrijednost, 0, 1023, 0, 20);
-  if (napon < NAPON_BATERIJE_LIMIT){
-    Serial.write(0x01);
-  }
-  else{
-    Serial.write(0x00);
+  if (napon < NAPON_BATERIJE_LIMIT) {
+    Serial.write(0x01); // Obavijest o praznoj bateriji
+  } else {
+    Serial.write(0x00); // Baterija nije prazna
   }
 }
 
-
-// callback funkcija za postavljanje intenziteta flash ledice esp32-cam modula
+/**
+ * @brief Funkcija za postavljanje intenziteta flash LED-a via I2C.
+ */
 void setFlashIntensity() {
   Wire.write(flashIntensity);     // Pošalji intenzitet za flash led
-
 }
-
