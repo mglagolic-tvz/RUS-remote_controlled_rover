@@ -18,3 +18,5 @@
 | R 30k                             | R4                 | 1        |
 | SW_SPST                           | SW1                | 1        |
 | L293D                             | U1                 | 1        |
+| 9g servo motori                   |                    | 2        |
+| žice                              |                    |          |
