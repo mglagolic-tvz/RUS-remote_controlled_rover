@@ -119,7 +119,7 @@ niz parova ID-vrijednost se nastavlja
 ---
 ## Upute za korištenje
 
-1. Spojiti predajnik i robota prema shemi u repozitoriju (trenutno nije dostupna, bit će uskoro).
+1. Spojiti predajnik i robota prema [`shemi`](https://github.com/mglagolic-tvz/RUS-remote_controlled_rover/blob/main/sheme/Shema.pdf) u direktoriju (`/sheme`) u ovom repozitoriju.
 2. Pomoću Arduino IDE-a snimiti kod iz repozitorija na razvojne pločice (Arduino UNO, Arduino Nano, ESP32-CAM).
 3. Priključiti USB Bluetooth dongle na računalo i zabilježiti njegovu MAC adresu.
 4. Povezati PlayStation 3 kontroler na računalo USB kablom te pomoću SixAxisPairingTool alata usnimiti mu ranije zabilježenu MAC adresu.
@@ -158,19 +158,13 @@ Isključivanje regulatora napona za ESP i HC-12 hardverski je već omogućeno. O
 
 ## Programska podrška
 
-- **Arduino Nano**:
-  - Upravljanje motorima na temelju zaprimljenih podataka.
-  - Praćenje napona baterije.
-  - Kontrola rasvjete i sleep moda robota.
-- **ESP32-CAM**:
-  - Streamanje slike putem HTTP servera.
+Kod je dostupan u `/kodovi` direktoriju repozitorija.
 
 **Potrebne knjižnice:**
-- [`PS3BT`](https://github.com/felis/USB_Host_Shield_2.0)
+- `PS3BT.h` — dostupna za preuzimanje [`sa službenog github repozitorija`](https://github.com/felis/USB_Host_Shield_2.0) ili sa [`repozitorija ovog projekta`](https://github.com/mglagolic-tvz/RUS-remote_controlled_rover/blob/main/kodovi/predajnik/USB_Host_Shield_2.0-master.zip) u direktoriju /kodovi/predajnik.
 - `Servo.h` — moguće preuzeti putem Library Managera u Arduino IDE-u
 - Ostale standardne Arduino knjižnice.
 
-Kod će biti dostupan u `/kodovi` direktoriju repozitorija.
 
 ---
 
