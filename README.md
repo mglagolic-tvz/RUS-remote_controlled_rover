@@ -32,9 +32,6 @@ Korištena varijanta OV2640 senzora opremljena je lećama sa **120° FOV (Field 
 ## Fotografija robota
 ![Robot-slika](https://github.com/user-attachments/assets/5e5f7a7a-c142-4b9a-95c3-88bc530a2e6c)
 
-
-
-
 ---
 
 ## Funkcijski zahtjevi
@@ -48,75 +45,6 @@ Korištena varijanta OV2640 senzora opremljena je lećama sa **120° FOV (Field 
 
 ---
 
-## Komponente
-
-| Komponenta               | Količina |
-| ------------------------- | :------: |
-| Arduino Nano              | 1        |
-| ESP32-CAM                 | 1        |
-| OV2640 kamera (120° FOV)   | 1        |
-| Platforma s gusjenicama    | 1        |
-| HC-12 bežični modul        | 2        |
-| Artikulacijski nosač kamere| 1        |
-| Litijska baterija (2S)     | 1        |
-| Modul za punjenje baterije | 1        |
-| Buck regulator napona sa izlaznim naponom 5V i enable pinom (npr. S09) | 1 |
-| Buck regulator napona sa izlaznim naponom 3.3V i enable pinom (npr. S09) | 1 |
-| Logic level shifter (barem 4 kanala) | 1 |
-| Otpornik 1 kΩ | 1 |
-| Otpornik 6.7 kΩ | 2 |
-| Otpornik 10 kΩ | 3 |
-| Otpornik 30 kΩ | 1 |
-| LED dioda crvena | 1 |
-| Arduino UNO R3             | 1        |
-| USB Host Shield            | 1        |
-| Generic Bluetooth USB dongle | 1 |
-| PlayStation 3 kontroler | 1 |
-| Programator za ESP32-CAM | 1 |
-| USB B kabel (za Arduino Uno) | 1 |
-| USB Mini B kabel (za Arduino Nano) | 1 |
-| USB Micro B kabel (za ESP32-CAM programator) | 1 |
-
----
-
-## Blok sheme
-
-### Predajnik - blok shema
-![blok_shema_predajnik drawio](https://github.com/user-attachments/assets/3c8b8bbf-0eb3-4c24-9e46-f98edcd10e87)
-
-### Robot - blok shema
-![blok_shema_kontroler drawio](https://github.com/user-attachments/assets/47ea0b02-8f2b-443d-82a4-00d7820ead77)
-
----
-## Opis komunikacijskog protokola
-
-Za komunikaciju između predajnika i robota koristi se jednostavan binarni protokol temeljen na slanju podataka u byte formatu.  
-Protokol je dizajniran tako da bude lagan za obradu i otporan na pogreške te omogućava jednostavno proširivanje.
-
-### Struktura paketa
-Paket podataka koji se šalje od predajnika prema robotu sastoji se od sljedećih elemenata:
-
-- **Start byte** (`0xAA`) – označava početak paketa.
-- **Podaci** – niz parova `ID` i `vrijednost`:
-  - `ID` definira tip podatka (npr. brzina motora 1, rotacija kamere, upravljanje svjetlom itd.),
-  - `vrijednost` predstavlja konkretan podatak (npr. brzina motora, kut serva, uključeno/isključeno svjetlo) koji je 8-bitna vrijednost.
-- **Stop byte** (`0x55`) – označava kraj paketa.
-
-### Primjer paketa
-
-| Byte pozicija | Vrijednost | Opis              |
-| ------------- | ---------- | ----------------- |
-| 0             | `0xAA`      | Start byte        |
-| 1             | `0x01`      | ID - Brzina motora 1 |
-| 2             | `0x7F`      | Vrijednost (127 = pola brzine) |
-| 3             | `0x02`      | ID - brzina motora 2 |
-| 4             | `0x00`      | Vrijednost (0 = ugašen) |
-| 5             | `0x03`      | ID - smjer motora 1 |
-| 6             | `0x01`      | Vrijednost (1 = naprijed) |
-niz parova ID-vrijednost se nastavlja
-| N             | `0x55`      | Stop byte         |
-
----
 ## Upute za korištenje
 
 1. Spojiti predajnik i robota prema [`shemi`](https://github.com/mglagolic-tvz/RUS-remote_controlled_rover/blob/main/sheme/Shema.pdf) u direktoriju (`/sheme`) u ovom repozitoriju.
@@ -169,15 +97,7 @@ Isključivanje regulatora napona za ESP i HC-12 hardverski je već omogućeno. O
 
 ---
 
-## Programska podrška
-
-Kod je dostupan u `/kodovi` direktoriju repozitorija.
-
-**Potrebne knjižnice:**
-- `PS3BT.h` — dostupna za preuzimanje [`sa službenog github repozitorija`](https://github.com/felis/USB_Host_Shield_2.0) ili sa [`repozitorija ovog projekta`](https://github.com/mglagolic-tvz/RUS-remote_controlled_rover/blob/main/kodovi/predajnik/USB_Host_Shield_2.0-master.zip) u direktoriju /kodovi/predajnik.
-- `Servo.h` — moguće preuzeti putem Library Managera u Arduino IDE-u
-- Ostale standardne Arduino knjižnice.
-
+Za Dodatne informacije o radu ovog robota uputite se na [`Wiki`](https://github.com/mglagolic-tvz/RUS-remote_controlled_rover/wiki) ovoga projekta.
 
 ---
 
@@ -205,17 +125,3 @@ Kod je dostupan u `/kodovi` direktoriju repozitorija.
 
 Ovaj projekt je objavljen pod GNU General Public License v3.0.
 
-```
-Copyright (C) 2025
-
-Ovaj program je slobodan softver: možete ga redistribuirati i/ili modificirati pod uvjetima
-GNU General Public License kao što je objavila Free Software Foundation, bilo verzije 3 licence,
-ili (po vašem izboru) bilo koje kasnije verzije.
-
-Ovaj program se distribuira u nadi da će biti koristan, ali BEZ IKAKVOG JAMSTVA;
-čak ni bez impliciranog jamstva za PRODAJNOST ili PRIKLADNOST ZA ODREĐENU NAMJENU.
-Za više detalja pogledajte GNU General Public License.
-
-Trebali ste primiti kopiju GNU General Public License uz ovaj program.
-Ako niste, pogledajte <https://www.gnu.org/licenses/>.
-```
