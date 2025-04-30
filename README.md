@@ -122,9 +122,9 @@ niz parova ID-vrijednost se nastavlja
 1. Spojiti predajnik i robota prema [`shemi`](https://github.com/mglagolic-tvz/RUS-remote_controlled_rover/blob/main/sheme/Shema.pdf) u direktoriju (`/sheme`) u ovom repozitoriju.
 2. Pomoću Arduino IDE-a snimiti kod iz repozitorija na razvojne pločice (Arduino UNO, Arduino Nano, ESP32-CAM).
 3. Priključiti USB Bluetooth dongle na računalo i zabilježiti njegovu MAC adresu.
-4. Povezati PlayStation 3 kontroler na računalo USB kablom te pomoću SixAxisPairingTool alata usnimiti mu ranije zabilježenu MAC adresu.
+4. Povezati PlayStation 3 kontroler na računalo USB kablom te pomoću [`SixAxisPairTool`](https://sixaxispairtool.en.lo4d.com/windows) alata usnimiti mu ranije zabilježenu MAC adresu.
 5. Na računalu ili mobilnom uređaju otvoriti web preglednik i pristupiti IP adresi ESP32-CAM-a za pregled slike (detaljnije o ovom koraku kasnije u tekstu).
-6. Upravljati robotom pomoću PlayStation 3 kontrolera.
+6. Uključiti PlayStation 3 kontroler pritiskom na tipku PS.
 
 **Napomene:**  
 - Potrebne knjižnice i firmware opisani su u sekciji [Programska podrška](#programska-podrška).
@@ -141,6 +141,19 @@ Video prijenosu može se pristupiti na dva načina:
 - Navigiranjem na `<IP_adresa>:81/stream` prikazuje se samo prijenos slike bez dodatnih opcija.
 
 U slučaju prekida veze ili gašenja i paljenja robota, nije potrebno ponovo upisivati URL kamere; dovoljno je samo osvježiti web preglednik (stranicu).
+
+### Kontrole PlayStation 3 kontrolera
+
+| Gumb / Palica          | Funkcija                             |
+|------------------------|--------------------------------------|
+| Lijeva analogna palica | Upravljanje lijevom gusjenicom (naprijed/nazad) |
+| Desna analogna palica  | Upravljanje desnom gusjenicom (naprijed/nazad) |
+| Strelica gore          | Pojačavanje intenziteta svjetla kamere |
+| Strelica dolje         | Smanjivanje intenziteta svjetla kamere |
+| Gumb `R1`              | Mijenja funkciju desne palice da upravlja nosačem kamere    |
+| Desna analogna palica + gumb `R1`          | Upravljanje nosačem kamere |
+
+NAPOMENA: Nije moguće u isto vrijeme upravljati gusjenicama i usmjerenjem kamere.
 
 ### Razina napunjenosti baterije
 Kada robot registrira da je razina baterije pala ispod 20% (<7.4V), signalizirat će to paljenjem LED-ice na predajniku.
