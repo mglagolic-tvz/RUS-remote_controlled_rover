@@ -3,10 +3,7 @@
 ## Sadržaj
 - [Opis projekta](#opis-projekta)
 - [Funkcijski zahtjevi](#funkcijski-zahtjevi)
-- [Komponente](#komponente)
-- [Blok sheme](#blok-sheme)
 - [Upute za korištenje](#upute-za-korištenje)
-- [Programska podrška](#programska-podrška)
 - [Poznate greške i ograničenja](#poznate-greške-i-ograničenja)
 - [Planovi za budući razvoj](#planovi-za-budući-razvoj)
 - [Licenca](#licenca)
