@@ -108,6 +108,8 @@ Za Dodatne informacije o radu ovog robota uputite se na [`Wiki`](https://github.
 ## Planovi za budući razvoj
 
 - Razvoj vlastitog kontrolera za poboljšano upravljanje.
+- Za ESP32-CAM isprogramirati da sam pokušava obniviti vezu nakon što pukne signal.
+- Koristiti kontrolni zbroj radi poboljšanja integriteta paketa za upravljanje robotom.
 - Napuštanje Wi-Fi veze za prijenos slike radi korištenja kvalitetnije tehnologije.
 - Korištenje boljih antena.
 - Zamjena Arduino Nano s mikrokontrolerom s više pinova i perifernih opcija (trenutno su gotovo svi pinovi iskorišteni, a napredne periferne funkcije poput SPI-ja kolidiraju s PWM izlazom Timer-a 2 korištenim za upravljanje brzinom motora).
