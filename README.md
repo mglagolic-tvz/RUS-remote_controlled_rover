@@ -120,6 +120,12 @@ Za Dodatne informacije o radu ovog robota uputite se na [`Wiki`](https://github.
 
 ---
 
+## Važne poveznice
+
+- [`dokumentacija koda kontrolera robota`](https://mglagolic-tvz.github.io/RUS-remote_controlled_rover/kontroler/).
+- [`Dokumentacija koda predajnika`](https://mglagolic-tvz.github.io/RUS-remote_controlled_rover/predajnik/).
+- [`Knjižnica PS3BT.h`](https://github.com/felis/USB_Host_Shield_2.0).
+
 ## Licenca
 
 Ovaj projekt je objavljen pod GNU General Public License v3.0.
