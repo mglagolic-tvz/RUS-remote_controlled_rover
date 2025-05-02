@@ -1,0 +1,5 @@
+<map id="createPacket" name="createPacket">
+<area shape="rect" id="Node000001" title="Priprema paket podataka za slanje." alt="" coords="5,5,111,31"/>
+<area shape="rect" id="Node000002" href="$d7/dbd/predajnik_8ino.html#a843c0937069c846033d5f2225c4b71a4" title="Dodaje podatak u paket." alt="" coords="159,5,261,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,15,145,15,145,21,111,21"/>
+</map>

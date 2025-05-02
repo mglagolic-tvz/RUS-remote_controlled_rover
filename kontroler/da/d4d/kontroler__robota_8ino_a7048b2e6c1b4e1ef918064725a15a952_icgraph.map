@@ -1,0 +1,16 @@
+<map id="setMotor2Speed" name="setMotor2Speed">
+<area shape="rect" id="Node000001" title="Funkcija za postavljanje brzine motora 2." alt="" coords="572,32,700,57"/>
+<area shape="rect" id="Node000002" href="$da/d4d/kontroler__robota_8ino.html#a0e4b0fa40af71f6c069e3a40c16c78da" title="Funkcija za upravljanje podacima na temelju ID&#45;a." alt="" coords="427,7,524,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="558,35,524,30,525,24,559,30"/>
+<area shape="rect" id="Node000006" href="$da/d4d/kontroler__robota_8ino.html#a574496e1966eec1bdd39a5bab7f44117" title="Funkcija za zaustavljanje robota." alt="" coords="431,56,519,81"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="559,59,520,65,519,60,558,54"/>
+<area shape="rect" id="Node000003" href="$da/d4d/kontroler__robota_8ino.html#a9d736a88044123ed013e4e91bcffb578" title="Funkcija za obradu primljenih podataka iz paketa." alt="" coords="264,5,379,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="413,21,379,21,379,16,413,16"/>
+<area shape="rect" id="Node000004" href="$da/d4d/kontroler__robota_8ino.html#a29539d36e0c4bdf46aa1a2346c69fa00" title="Funkcija za primanje paketa sa serijskog porta." alt="" coords="104,7,216,32"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="250,21,216,22,216,16,250,16"/>
+<area shape="rect" id="Node000005" href="$da/d4d/kontroler__robota_8ino.html#afe461d27b9c48d5921c00d521181f12f" title="Glavna funkcija koja se izvršava u petlji." alt="" coords="5,32,56,57"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="91,36,57,42,56,37,90,30"/>
+<area shape="rect" id="Node000007" href="$da/d4d/kontroler__robota_8ino.html#ae5b5093bef9a291e112c49e9aae5feec" title="Funkcija za prelazak u stanje spavanja." alt="" coords="114,56,206,81"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="418,71,206,71,206,66,418,66"/>
+<area shape="poly" id="edge7_Node000007_Node000005" title=" " alt="" coords="100,60,56,52,57,47,101,55"/>
+</map>

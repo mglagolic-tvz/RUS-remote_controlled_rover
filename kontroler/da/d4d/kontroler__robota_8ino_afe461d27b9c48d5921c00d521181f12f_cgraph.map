@@ -1,0 +1,34 @@
+<map id="loop" name="loop">
+<area shape="rect" id="Node000001" title="Glavna funkcija koja se izvršava u petlji." alt="" coords="5,87,56,112"/>
+<area shape="rect" id="Node000002" href="$da/d4d/kontroler__robota_8ino.html#aa335e0b3e3ad503678b65c90e560ec47" title="Funkcija za provjeru stanja baterije." alt="" coords="104,11,247,36"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="50,84,103,53,131,39,133,44,105,58,53,89"/>
+<area shape="rect" id="Node000003" href="$da/d4d/kontroler__robota_8ino.html#ae5b5093bef9a291e112c49e9aae5feec" title="Funkcija za prelazak u stanje spavanja." alt="" coords="306,59,398,84"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="56,95,292,74,292,79,57,100"/>
+<area shape="rect" id="Node000008" href="$da/d4d/kontroler__robota_8ino.html#a29539d36e0c4bdf46aa1a2346c69fa00" title="Funkcija za primanje paketa sa serijskog porta." alt="" coords="119,112,231,137"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="57,101,106,110,105,115,56,106"/>
+<area shape="rect" id="Node000015" href="$da/d4d/kontroler__robota_8ino.html#a079d49a5302222debfe4dc54cf7a5c7a" title="Funkcija za buđenje robota." alt="" coords="138,161,213,187"/>
+<area shape="poly" id="edge17_Node000001_Node000015" title=" " alt="" coords="49,110,75,129,105,148,126,157,124,162,103,152,72,134,46,115"/>
+<area shape="rect" id="Node000004" href="$da/d4d/kontroler__robota_8ino.html#a574496e1966eec1bdd39a5bab7f44117" title="Funkcija za zaustavljanje robota." alt="" coords="462,57,550,83"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="398,68,448,68,448,73,398,74"/>
+<area shape="rect" id="Node000005" href="$da/d4d/kontroler__robota_8ino.html#afbabfd5287dc49bf1a601de23cf632c3" title="Funkcija za postavljanje intenziteta flash LED&#45;a via I2C." alt="" coords="603,5,737,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="546,55,615,32,617,37,548,60"/>
+<area shape="rect" id="Node000006" href="$da/d4d/kontroler__robota_8ino.html#a1d36425ac902a6461a4ff961461675f9" title="Funkcija za postavljanje brzine motora 1." alt="" coords="606,55,734,80"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="550,67,592,66,592,71,550,72"/>
+<area shape="rect" id="Node000007" href="$da/d4d/kontroler__robota_8ino.html#a7048b2e6c1b4e1ef918064725a15a952" title="Funkcija za postavljanje brzine motora 2." alt="" coords="606,104,734,129"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="551,80,612,98,611,103,549,85"/>
+<area shape="rect" id="Node000009" href="$da/d4d/kontroler__robota_8ino.html#a9d736a88044123ed013e4e91bcffb578" title="Funkcija za obradu primljenih podataka iz paketa." alt="" coords="295,117,409,143"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="232,124,281,125,281,131,232,129"/>
+<area shape="rect" id="Node000010" href="$da/d4d/kontroler__robota_8ino.html#a0e4b0fa40af71f6c069e3a40c16c78da" title="Funkcija za upravljanje podacima na temelju ID&#45;a." alt="" coords="457,141,555,167"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="410,136,444,142,443,147,409,142"/>
+<area shape="poly" id="edge10_Node000010_Node000005" title=" " alt="" coords="515,140,563,82,601,40,610,34,613,39,604,44,567,86,520,143"/>
+<area shape="poly" id="edge12_Node000010_Node000006" title=" " alt="" coords="523,139,559,115,601,90,618,83,620,88,604,95,562,120,526,143"/>
+<area shape="poly" id="edge14_Node000010_Node000007" title=" " alt="" coords="554,140,600,130,601,135,555,146"/>
+<area shape="rect" id="Node000011" href="$da/d4d/kontroler__robota_8ino.html#aef433123a329291a11a25b5124521e20" title="Funkcija za postavljanje smjera motora 1." alt="" coords="617,203,723,228"/>
+<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="540,164,604,189,621,195,619,200,602,194,539,169"/>
+<area shape="rect" id="Node000012" href="$da/d4d/kontroler__robota_8ino.html#a2e8dfa102b1688810b90d9dbd9656342" title="Funkcija za postavljanje smjera motora 2." alt="" coords="617,252,723,277"/>
+<area shape="poly" id="edge13_Node000010_Node000012" title=" " alt="" coords="520,165,556,201,604,238,615,244,612,249,601,243,552,205,517,169"/>
+<area shape="rect" id="Node000013" href="$da/d4d/kontroler__robota_8ino.html#a71bbe7ecab69b048e4541f62bbf85e27" title="Funkcija za postavljanje horizontalnog servo motora." alt="" coords="625,301,715,327"/>
+<area shape="poly" id="edge15_Node000010_Node000013" title=" " alt="" coords="515,166,548,224,573,258,604,288,615,295,612,299,601,292,569,262,543,227,511,168"/>
+<area shape="rect" id="Node000014" href="$da/d4d/kontroler__robota_8ino.html#a9c5b9b505016c0b643ff01c9cdde0be0" title="Funkcija za postavljanje vertikalnog servo motora." alt="" coords="626,153,714,179"/>
+<area shape="poly" id="edge16_Node000010_Node000014" title=" " alt="" coords="555,155,612,159,612,164,555,160"/>
+</map>

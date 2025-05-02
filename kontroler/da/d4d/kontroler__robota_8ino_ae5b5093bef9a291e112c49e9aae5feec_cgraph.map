@@ -1,0 +1,11 @@
+<map id="enterSleep" name="enterSleep">
+<area shape="rect" id="Node000001" title="Funkcija za prelazak u stanje spavanja." alt="" coords="5,55,97,80"/>
+<area shape="rect" id="Node000002" href="$da/d4d/kontroler__robota_8ino.html#a574496e1966eec1bdd39a5bab7f44117" title="Funkcija za zaustavljanje robota." alt="" coords="145,55,233,80"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="97,65,132,65,132,70,97,70"/>
+<area shape="rect" id="Node000003" href="$da/d4d/kontroler__robota_8ino.html#afbabfd5287dc49bf1a601de23cf632c3" title="Funkcija za postavljanje intenziteta flash LED&#45;a via I2C." alt="" coords="281,5,416,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="230,52,293,32,294,37,232,57"/>
+<area shape="rect" id="Node000004" href="$da/d4d/kontroler__robota_8ino.html#a1d36425ac902a6461a4ff961461675f9" title="Funkcija za postavljanje brzine motora 1." alt="" coords="285,55,413,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="233,65,271,65,271,70,233,70"/>
+<area shape="rect" id="Node000005" href="$da/d4d/kontroler__robota_8ino.html#a7048b2e6c1b4e1ef918064725a15a952" title="Funkcija za postavljanje brzine motora 2." alt="" coords="285,104,413,129"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="232,77,294,97,293,102,230,83"/>
+</map>

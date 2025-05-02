@@ -1,0 +1,5 @@
+<map id="receivePacket" name="receivePacket">
+<area shape="rect" id="Node000001" title="Funkcija za primanje paketa sa serijskog porta." alt="" coords="104,5,216,31"/>
+<area shape="rect" id="Node000002" href="$da/d4d/kontroler__robota_8ino.html#afe461d27b9c48d5921c00d521181f12f" title="Glavna funkcija koja se izvršava u petlji." alt="" coords="5,5,56,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="90,21,56,21,56,15,90,15"/>
+</map>

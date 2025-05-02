@@ -1,0 +1,5 @@
+<map id="setup" name="setup">
+<area shape="rect" id="Node000001" title="Funkcija koja se poziva pri početnoj inicijalizaciji sustava." alt="" coords="5,5,64,31"/>
+<area shape="rect" id="Node000002" href="$da/d4d/kontroler__robota_8ino.html#afbabfd5287dc49bf1a601de23cf632c3" title="Funkcija za postavljanje intenziteta flash LED&#45;a via I2C." alt="" coords="112,5,247,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="64,15,98,15,98,21,64,21"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="stopRobot" name="stopRobot">
+<area shape="rect" id="Node000001" title="Funkcija za zaustavljanje robota." alt="" coords="5,55,93,80"/>
+<area shape="rect" id="Node000002" href="$da/d4d/kontroler__robota_8ino.html#afbabfd5287dc49bf1a601de23cf632c3" title="Funkcija za postavljanje intenziteta flash LED&#45;a via I2C." alt="" coords="141,5,276,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="90,52,153,32,154,37,92,57"/>
+<area shape="rect" id="Node000003" href="$da/d4d/kontroler__robota_8ino.html#a1d36425ac902a6461a4ff961461675f9" title="Funkcija za postavljanje brzine motora 1." alt="" coords="145,55,273,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="93,65,131,65,131,70,93,70"/>
+<area shape="rect" id="Node000004" href="$da/d4d/kontroler__robota_8ino.html#a7048b2e6c1b4e1ef918064725a15a952" title="Funkcija za postavljanje brzine motora 2." alt="" coords="145,104,273,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="92,77,154,97,153,102,90,83"/>
+</map>
