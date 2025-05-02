@@ -6,6 +6,7 @@
 - [Upute za korištenje](#upute-za-korištenje)
 - [Poznate greške i ograničenja](#poznate-greške-i-ograničenja)
 - [Planovi za budući razvoj](#planovi-za-budući-razvoj)
+- [Važne poveznice](#važne-poveznice)
 - [Licenca](#licenca)
 
 ---
