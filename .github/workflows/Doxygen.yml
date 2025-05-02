@@ -3,52 +3,52 @@ name: Doxygen Documentation
 on:
   push:
     branches:
-      - main  # Trigger workflow on push to the 'main' branch
+      - main
   pull_request:
     branches:
-      - main  # Trigger workflow for pull requests targeting the 'main' branch
+      - main
 
 permissions:
-  contents: write  # Allow GitHub Actions to push changes to the repository
+  contents: write
 
 jobs:
   doxygen:
-    name: Generate Doxygen Documentation
-    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
+    name: Generate and Deploy Doxygen Docs
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4  # Checkout the code from the repository
-
-      - name: Cache Doxygen
-        uses: actions/cache@v3  # Cache Doxygen installation to speed up subsequent builds
-        with:
-          path: ~/.cache/doxygen  # Cache location
-          key: doxygen-${{ runner.os }}  # Cache key based on OS
+        uses: actions/checkout@v4
 
       - name: Install Doxygen
         run: |
-          sudo apt-get update  # Update package list
-          sudo apt-get install -y doxygen  # Install Doxygen
-          doxygen -v  # Verify that Doxygen is installed correctly
+          sudo apt-get update
+          sudo apt-get install -y doxygen
 
       - name: Install Graphviz
-        run: sudo apt-get install graphviz
+        run: sudo apt-get install -y graphviz
 
       - name: Generate Documentation for predajnik
         run: |
-          cd kodovi/predajnik/  # Change to the directory containing the Doxyfile
-          doxygen Doxyfile || { echo "Doxygen failed"; exit 1; }  # Run Doxygen, exit if it fails
-          if [ ! -d "docs/html" ]; then echo "Error: docs/html not found!"; exit 1; fi  # Check if the HTML output directory exists
-      
+          cd kodovi/predajnik/
+          doxygen Doxyfile
+          cd ../../
+
       - name: Generate Documentation for kontroler
         run: |
-          cd kodovi/kontroler_robota/  # Change to the directory containing the Doxyfile
-          doxygen Doxyfile || { echo "Doxygen failed"; exit 1; }  # Run Doxygen, exit if it fails
-          if [ ! -d "docs/html" ]; then echo "Error: docs/html not found!"; exit 1; fi  # Check if the HTML output directory exists
+          cd kodovi/kontroler_robota/
+          doxygen Doxyfile
+          cd ../../
 
-      - name: Deploy Documentation to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3  # Use the 'actions-gh-pages' action to deploy documentation
+      - name: Combine documentation into one directory
+        run: |
+          mkdir -p combined-docs/predajnik
+          mkdir -p combined-docs/kontroler
+          cp -r kodovi/predajnik/docs/html/* combined-docs/predajnik/
+          cp -r kodovi/kontroler_robota/docs/html/* combined-docs/kontroler/
+
+      - name: Deploy Combined Documentation to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}  # Use the GitHub token for authentication
-          publish_dir: Lab1/docs/html  # Directory where the HTML documentation is generated
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: combined-docs
