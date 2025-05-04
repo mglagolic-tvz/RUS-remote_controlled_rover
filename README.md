@@ -33,13 +33,15 @@ Korištena varijanta OV2640 senzora opremljena je lećama sa **120° FOV (Field 
 ---
 
 ## Funkcijski zahtjevi
-- Kretanje u prostoru na daljinsko upravljanje.
-- Baterijsko napajanje.
-- Bežični prijenos slike putem WiFi-a na pametni telefon ili računalo.
-- Artikulacijski nosač kamere za neovisno usmjeravanje kamere.
-- Rasvjetno tijelo za kretanje u mračnim prostorima.
-- Mjerenje napona baterije.
-- Standardizirani komunikacijski protokol za podršku različitim tipovima kontrolera (npr. specifični kontroler za rover, PlayStation kontroler, tipkovnica za računalo).
+| ID  | Funkcijski zahtjev                                                                                                     |
+|-----|------------------------------------------------------------------------------------------------------------------------|
+| F1  | Kretanje u prostoru na daljinsko upravljanje.                                                                          |
+| F2  | Baterijsko napajanje.                                                                                                  |
+| F3  | Bežični prijenos slike putem WiFi-a na pametni telefon ili računalo.                                                  |
+| F4  | Artikulacijski nosač kamere za neovisno usmjeravanje kamere.                                                          |
+| F5  | Rasvjetno tijelo za kretanje u mračnim prostorima.                                                                     |
+| F6  | Mjerenje napona baterije.                                                                                              |
+| F7  | Standardizirani komunikacijski protokol za podršku različitim tipovima kontrolera (npr. specifični kontroler za rover, PlayStation kontroler, tipkovnica za računalo). |
 
 ---
 
